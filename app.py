@@ -28,7 +28,10 @@ session = Session(engine)
 # Flask Setup
 app = Flask(__name__)
 
-# Took some code from Jupyter Notebook
+# Resources:
+#   https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_dict.html
+
+# Route Data Setup
 measurement_df = pd.read_sql("select date, prcp from Measurement \
     where date between '2016-08-23' and '2017-08-23'",conn)
 measurement_df = measurement_df.dropna()
@@ -61,7 +64,7 @@ def hello():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
 
-    """Return a list of stations."""
+    """Return a list of stations and precipitations"""
 
     return jsonify(prcp_df)
 
@@ -69,7 +72,7 @@ def precipitation():
 @app.route("/api/v1.0/stations")
 def stations():
 
-    """Return a list of stations."""
+    """Return a list of stations"""
 
     return station_list
 
@@ -77,7 +80,7 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def temperatures():
 
-    """Return the temperature observations (tobs) for previous year."""
+    """Return the temperature observations"""
 
     return station_9281
 
@@ -86,7 +89,7 @@ def temperatures():
 @app.route("/api/v1.0/<start>/<end>")
 def dates(start=None, end=None):
 
-    """Return TMIN, TAVG, TMAX."""
+    """Return temperature minimum, average, maximum"""
 
     if not end:
         end = last_year
